@@ -6,6 +6,10 @@ function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const value = { toasts, createToast, dismissToast };
 
+  useEscapeKey(() => {
+    setToasts([]);
+  });
+
   function createToast(message, variant) {
     const nextToasts = [
       ...toasts,
@@ -26,6 +30,22 @@ function ToastProvider({ children }) {
   }
 
   return <ToastContext.Provider value={value}>{children}</ToastContext.Provider>;
+}
+
+function useEscapeKey(callback) {
+  React.useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.code === "Escape") {
+        callback(event);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 }
 
 export default ToastProvider;
