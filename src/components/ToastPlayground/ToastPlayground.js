@@ -1,33 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import Button from "../Button";
-import Toast from "../Toast";
 import ToastShelf from "../ToastShelf";
+
+import { ToastContext } from "../ToastProvider";
 
 import styles from "./ToastPlayground.module.css";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
+  const { toasts, createToast } = useContext(ToastContext);
+
   const [variant, setVariant] = useState();
   const [message, setMessage] = useState("");
-  const [toasts, setToasts] = useState([]);
 
   const addToast = (e) => {
     e.preventDefault();
-
-    const newToast = {
-      id: Math.random(),
-      variant,
-      message,
-    };
-
-    setToasts([...toasts, newToast]);
-  };
-
-  const handleDismiss = (id) => {
-    const newToasts = toasts.filter((item) => id !== item.id);
-    setToasts(newToasts);
+    createToast(message, variant);
   };
 
   return (
@@ -36,7 +26,7 @@ function ToastPlayground() {
         <img alt='Cute toast mascot' src='/toast.png' />
         <h1>Toast Playground</h1>
       </header>
-      {toasts.length > 0 && <ToastShelf toasts={toasts} handleDismiss={handleDismiss} />}
+      {toasts.length > 0 && <ToastShelf toasts={toasts} />}
       <form className={styles.controlsWrapper} onSubmit={addToast}>
         <div className={styles.row}>
           <label htmlFor='message' className={styles.label} style={{ alignSelf: "baseline" }}>
