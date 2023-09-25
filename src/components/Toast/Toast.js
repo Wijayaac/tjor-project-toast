@@ -18,10 +18,6 @@ function Toast({ id, variant, children }) {
   const { dismissToast } = useContext(ToastContext);
 
   const Icon = ICONS_BY_VARIANT[variant];
-
-  const handleClose = () => {
-    dismissToast(id);
-  };
   return (
     <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
@@ -32,7 +28,7 @@ function Toast({ id, variant, children }) {
         {children}
       </p>
       <button className={styles.closeButton} aria-label='Dismiss message' aria-live='off'>
-        <X size={24} onClick={handleClose} />
+        <X size={24} onClick={() => dismissToast(id)} />
       </button>
     </div>
   );

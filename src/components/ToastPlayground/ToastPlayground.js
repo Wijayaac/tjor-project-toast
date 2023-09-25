@@ -10,14 +10,17 @@ import styles from "./ToastPlayground.module.css";
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
-  const { toasts, createToast } = useContext(ToastContext);
+  const { createToast } = useContext(ToastContext);
 
-  const [variant, setVariant] = useState();
+  const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
   const [message, setMessage] = useState("");
 
   const addToast = (e) => {
     e.preventDefault();
     createToast(message, variant);
+
+    setVariant(VARIANT_OPTIONS[0]);
+    setMessage("");
   };
 
   return (
@@ -26,7 +29,7 @@ function ToastPlayground() {
         <img alt='Cute toast mascot' src='/toast.png' />
         <h1>Toast Playground</h1>
       </header>
-      {toasts.length > 0 && <ToastShelf toasts={toasts} />}
+      <ToastShelf />
       <form className={styles.controlsWrapper} onSubmit={addToast}>
         <div className={styles.row}>
           <label htmlFor='message' className={styles.label} style={{ alignSelf: "baseline" }}>
